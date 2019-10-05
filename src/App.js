@@ -5,6 +5,7 @@ class App extends Component {
 	state = {
 		word: [],
 		currentGuess: [],
+		incorrectGuesses: [],
 		remainingGuesses: 6
 	};
 
