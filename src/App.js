@@ -6,31 +6,25 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import LetterButtons from './LetterButtons';
+import GameOverModal from './GameOverModal';
 
 class App extends Component {
 	state = {
 		secretWord: [],
 		currentWord: [],
 		incorrectGuesses: [],
-		remainingGuesses: 6
+		remainingGuesses: 6,
+		modalShow: false,
+		resetCount: 0,
+		gameOutcome: ''
 	};
 
 	componentDidMount() {
-		//call API, pick a secretWord
-		const secretWord = 'freedom',
-			currentWord = [];
-
-		[...secretWord].forEach(() => {
-			currentWord.push('_');
-		});
-		this.setState({
-			secretWord: [...secretWord.toUpperCase()],
-			currentWord
-		});
+		this.gameReset();
 	}
 
 	handleCheckLetter = (letter) => {
-		const { secretWord, currentWord } = this.state;
+		const { secretWord, currentWord, remainingGuesses } = this.state;
 		let found = false;
 
 		//check if letter is part of the secretWord
@@ -46,6 +40,12 @@ class App extends Component {
 			currentWord
 		});
 
+		if (currentWord.indexOf('_') === -1) {
+			//all letters have been guessed
+			//user won
+			this.gameOver('USER_WON');
+		}
+
 		if (!found) {
 			this.setState((currentState) => ({
 				remainingGuesses: currentState.remainingGuesses - 1
@@ -53,11 +53,56 @@ class App extends Component {
 			this.setState((currentState) => ({
 				incorrectGuesses: [...currentState.incorrectGuesses, letter]
 			}));
+			if (remainingGuesses - 1 === 0) {
+				//user ran out of allowed guesses
+				this.gameOver('USER_LOST');
+			}
 		}
 	};
 
+	gameOver = (outcome) => {
+		//show modal
+		if (outcome === 'USER_LOST') {
+			this.setState({
+				modalShow: true,
+				gameOutcome: 'USER_LOST'
+			});
+		} else {
+			this.setState({
+				modalShow: true,
+				gameOutcome: 'USER_WON'
+			});
+		}
+	};
+
+	gameReset = () => {
+		//call API, pick a secretWord
+		const secretWord = 'wild',
+			currentWord = [];
+
+		[...secretWord].forEach(() => {
+			currentWord.push('_');
+		});
+		this.setState((currentState) => ({
+			secretWord: [...secretWord.toUpperCase()],
+			currentWord,
+			incorrectGuesses: [],
+			remainingGuesses: 6,
+			modalShow: false,
+			resetCount: currentState.resetCount + 1,
+			gameOutcome: ''
+		}));
+	};
+
 	render() {
-		const { currentWord, remainingGuesses, incorrectGuesses } = this.state;
+		const {
+			currentWord,
+			remainingGuesses,
+			incorrectGuesses,
+			modalShow,
+			resetCount,
+			gameOutcome
+		} = this.state;
 
 		return (
 			<Container>
@@ -66,7 +111,13 @@ class App extends Component {
 				</Row>
 				<Row className="justify-content-center mb-3">
 					<Col xs={10}>
-						<LetterButtons handleCheckLetter={this.handleCheckLetter} />
+						{/* key attr is used here to reset the internal state of letter buttons when game is over
+						See https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html#recommendation-fully-controlled-component
+						for more deets*/}
+						<LetterButtons
+							handleCheckLetter={this.handleCheckLetter}
+							key={resetCount}
+						/>
 					</Col>
 				</Row>
 				<Row className="justify-content-center mb-3">
@@ -94,6 +145,12 @@ class App extends Component {
 						</h3>
 					</Col>
 				</Row>
+				<GameOverModal
+					show={modalShow}
+					gameReset={this.gameReset}
+					gameOutcome={gameOutcome}
+				/>
+				;
 			</Container>
 		);
 	}
