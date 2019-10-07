@@ -77,8 +77,12 @@ class App extends Component {
 
 	gameReset = () => {
 		let currentWord = [];
+		//generate a random number to pick a new word each time
+		const randomNum = Math.floor(Math.random() * 16000 + 1);
 		//call API, pick a secretWord
-		fetch('http://localhost:5000/words?minLength=3&count=1')
+		fetch(
+			`http://localhost:5000/words?minLength=3&count=1&difficulty=1&start=${randomNum}`
+		)
 			.then((response) => {
 				if (!response.ok) {
 					throw new Error(
@@ -87,7 +91,6 @@ class App extends Component {
 				}
 				return response.text();
 			})
-			//.then((data) => console.log('here', data) || data.secretWord)
 			.then((secretWord) => {
 				console.log(secretWord);
 				[...secretWord].forEach(() => {
@@ -162,7 +165,6 @@ class App extends Component {
 					gameReset={this.gameReset}
 					gameOutcome={gameOutcome}
 				/>
-				;
 			</Container>
 		);
 	}
