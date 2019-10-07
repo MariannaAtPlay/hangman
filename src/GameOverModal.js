@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import Emoji from 'a11y-react-emoji';
 
 function GameOverModal(props) {
 	const { show, gameReset, gameOutcome } = props;
@@ -19,9 +20,14 @@ function GameOverModal(props) {
 			</Modal.Header>
 			<Modal.Body className="d-flex justify-content-center">
 				{gameOutcome === 'USER_LOST' ? (
-					<h2>Computer won. Try again!</h2>
+					<h2>
+						Computer has won. Try again!
+						<Emoji symbol="😞" />
+					</h2>
 				) : (
-					<h2>You won! Congrats!</h2>
+					<h2>
+						You have won! Congrats! <Emoji symbol="🎉" />
+					</h2>
 				)}
 			</Modal.Body>
 			<Modal.Footer className="justify-content-center">

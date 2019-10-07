@@ -76,22 +76,34 @@ class App extends Component {
 	};
 
 	gameReset = () => {
+		let currentWord = [];
 		//call API, pick a secretWord
-		const secretWord = 'wild',
-			currentWord = [];
-
-		[...secretWord].forEach(() => {
-			currentWord.push('_');
-		});
-		this.setState((currentState) => ({
-			secretWord: [...secretWord.toUpperCase()],
-			currentWord,
-			incorrectGuesses: [],
-			remainingGuesses: 6,
-			modalShow: false,
-			resetCount: currentState.resetCount + 1,
-			gameOutcome: ''
-		}));
+		fetch('http://localhost:5000/words?minLength=3&count=1')
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error(
+						`Network response was not ok: ${response.status}, ${response.statusText}`
+					);
+				}
+				return response.text();
+			})
+			//.then((data) => console.log('here', data) || data.secretWord)
+			.then((secretWord) => {
+				console.log(secretWord);
+				[...secretWord].forEach(() => {
+					currentWord.push('_');
+				});
+				this.setState((currentState) => ({
+					secretWord: [...secretWord.toUpperCase()],
+					currentWord,
+					incorrectGuesses: [],
+					remainingGuesses: 6,
+					modalShow: false,
+					resetCount: currentState.resetCount + 1,
+					gameOutcome: ''
+				}));
+			})
+			.catch((error) => console.error(error));
 	};
 
 	render() {
