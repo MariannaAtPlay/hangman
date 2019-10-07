@@ -116,7 +116,8 @@ class App extends Component {
 			incorrectGuesses,
 			modalShow,
 			resetCount,
-			gameOutcome
+			gameOutcome,
+			secretWord
 		} = this.state;
 
 		return (
@@ -164,6 +165,7 @@ class App extends Component {
 					show={modalShow}
 					gameReset={this.gameReset}
 					gameOutcome={gameOutcome}
+					secretWord={secretWord}
 				/>
 			</Container>
 		);
