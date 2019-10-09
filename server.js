@@ -19,11 +19,7 @@ app.get('/words', (req, res) => {
 	const url = `${WORDS_API_URL}${req.originalUrl}`;
 
 	request.get(url, (err, response, body) => {
-		if (response.statusCode === 400) {
-			res.send([]);
-		} else {
-			res.send(body);
-		}
+		res.send(body);
 	});
 });
 

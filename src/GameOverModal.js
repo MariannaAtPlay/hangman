@@ -23,13 +23,16 @@ function GameOverModal(props) {
 					<div>
 						<h2>
 							Computer has won. Try again!
-							<Emoji symbol="😞" />
+							<Emoji symbol="😥" className="ml-3 emoji" />
 						</h2>
-						<p>The secret word was {secretWord}</p>
+						<h5 className="text-center mb-0">
+							The secret word was {secretWord}
+						</h5>
 					</div>
 				) : (
 					<h2>
-						You have won! Congrats! <Emoji symbol="🎉" />
+						You have won! Congrats!{' '}
+						<Emoji symbol="🎉" className="ml-3 emoji " />
 					</h2>
 				)}
 			</Modal.Body>

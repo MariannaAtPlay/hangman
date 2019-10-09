@@ -63,10 +63,13 @@ class App extends Component {
 	gameOver = (outcome) => {
 		//show modal
 		if (outcome === 'USER_LOST') {
-			this.setState({
-				modalShow: true,
-				gameOutcome: 'USER_LOST'
-			});
+			setTimeout(
+				this.setState({
+					modalShow: true,
+					gameOutcome: 'USER_LOST'
+				}),
+				3000
+			);
 		} else {
 			this.setState({
 				modalShow: true,
@@ -128,7 +131,7 @@ class App extends Component {
 				<Row className="justify-content-center mb-3">
 					<Col xs={10}>
 						{/* key attr is used here to reset the internal state of letter buttons when game is over
-						See https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html#recommendation-fully-controlled-component
+						See https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html#recommendation-fully-uncontrolled-component-with-a-key
 						for more deets*/}
 						<LetterButtons
 							handleCheckLetter={this.handleCheckLetter}
@@ -143,22 +146,29 @@ class App extends Component {
 				</Row>
 				<Row className="justify-content-center mb-3">
 					<Col xs={10}>
-						{/* 16.67 is 1/6 of 100 - there are 6 incorrect guesses allowed */}
-						<ProgressBar
-							variant="warning"
-							now={remainingGuesses * 16.67}
-							label={remainingGuesses}
-						/>
-					</Col>
-				</Row>
-				<Row className="justify-content-center mb-3">
-					<Col xs={10}>
 						<h3>
 							Letters guessed incorrectly:{' '}
 							{incorrectGuesses.length
 								? incorrectGuesses.join(', ')
 								: 'none'}
 						</h3>
+					</Col>
+				</Row>
+				<Row className="justify-content-center mb-3 text-center">
+					<Col xs={10}>
+						{/* 16.67 is 1/6 of 100 - there are 6 incorrect guesses allowed */}
+						<ProgressBar
+							variant="warning"
+							now={remainingGuesses * 16.67}
+							label={remainingGuesses}
+							className="mb-3"
+						/>
+						<img
+							src={`flower${remainingGuesses}.svg`}
+							alt=""
+							height="400px"
+							width="400px"
+						/>
 					</Col>
 				</Row>
 				<GameOverModal
