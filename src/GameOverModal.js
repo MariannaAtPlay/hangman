@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import Emoji from 'a11y-react-emoji';
 
 function GameOverModal(props) {
-	const { show, gameReset, gameOutcome, secretWord } = props;
+	const { show, gameReset, gameOutcome, secretWord, difficultyLevel } = props;
 
 	return (
 		<Modal
@@ -37,7 +37,7 @@ function GameOverModal(props) {
 				)}
 			</Modal.Body>
 			<Modal.Footer className="justify-content-center">
-				<Button variant="warning" onClick={gameReset}>
+				<Button variant="warning" onClick={(e) => gameReset(difficultyLevel, e)}>
 					Play Again
 				</Button>
 			</Modal.Footer>

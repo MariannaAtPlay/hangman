@@ -7,6 +7,7 @@ import Col from 'react-bootstrap/Col';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import LetterButtons from './LetterButtons';
 import GameOverModal from './GameOverModal';
+import WelcomeModal from './WelcomeModal';
 import UIfx from 'uifx';
 import saddertrombones from './sounds/saddertrombones.mp3';
 import piglevelwin from './sounds/piglevelwin.mp3';
@@ -20,14 +21,20 @@ class App extends Component {
 		currentWord: [],
 		incorrectGuesses: [],
 		remainingGuesses: 6,
-		modalShow: false,
+		difficultyLevel: 1,
+		gameOverModalShow: false,
+		welcomeModalShow: true,
 		resetCount: 0,
 		gameOutcome: ''
 	};
 
-	componentDidMount() {
-		this.gameReset();
-	}
+	handleLevelChange = (level) => {
+		this.setState({
+			welcomeModalShow: false,
+			difficultyLevel: level
+		});
+		this.gameReset(level);
+	};
 
 	handleCheckLetter = (letter) => {
 		const { secretWord, currentWord, remainingGuesses } = this.state;
@@ -70,14 +77,14 @@ class App extends Component {
 		//show modal
 		if (outcome === 'USER_LOST') {
 			this.setState({
-				modalShow: true,
+				gameOverModalShow: true,
 				gameOutcome: 'USER_LOST'
 			});
 			sadSound.setVolume(0.6);
 			sadSound.play();
 		} else {
 			this.setState({
-				modalShow: true,
+				gameOverModalShow: true,
 				gameOutcome: 'USER_WON'
 			});
 			happySound.setVolume(0.6);
@@ -85,13 +92,13 @@ class App extends Component {
 		}
 	};
 
-	gameReset = () => {
+	gameReset = (level) => {
 		let currentWord = [];
 		//generate a random number to pick a new word each time
 		const randomNum = Math.floor(Math.random() * 16000 + 1);
 		//call API, pick a secretWord
 		fetch(
-			`http://localhost:5000/words?minLength=3&count=1&difficulty=1&start=${randomNum}`
+			`http://localhost:5000/words?minLength=3&count=1&difficulty=${level}&start=${randomNum}`
 		)
 			.then((response) => {
 				if (!response.ok) {
@@ -111,7 +118,8 @@ class App extends Component {
 					currentWord,
 					incorrectGuesses: [],
 					remainingGuesses: 6,
-					modalShow: false,
+					welcomeModalShow: false,
+					gameOverModalShow: false,
 					resetCount: currentState.resetCount + 1,
 					gameOutcome: ''
 				}));
@@ -124,7 +132,9 @@ class App extends Component {
 			currentWord,
 			remainingGuesses,
 			incorrectGuesses,
-			modalShow,
+			difficultyLevel,
+			gameOverModalShow,
+			welcomeModalShow,
 			resetCount,
 			gameOutcome,
 			secretWord
@@ -147,8 +157,11 @@ class App extends Component {
 					</Col>
 				</Row>
 				<Row className="justify-content-center mb-3">
-					<Col xs={10}>
+					<Col xs={7}>
 						<h3>Remaining incorrect guesses: {remainingGuesses}</h3>
+					</Col>
+					<Col xs={3}>
+						<h3>Difficulty Level: {difficultyLevel} </h3>
 					</Col>
 				</Row>
 				<Row className="justify-content-center mb-3">
@@ -178,11 +191,16 @@ class App extends Component {
 						/>
 					</Col>
 				</Row>
+				<WelcomeModal
+					show={welcomeModalShow}
+					handleLevelChange={this.handleLevelChange}
+				/>
 				<GameOverModal
-					show={modalShow}
+					show={gameOverModalShow}
 					gameReset={this.gameReset}
 					gameOutcome={gameOutcome}
 					secretWord={secretWord}
+					difficultyLevel={difficultyLevel}
 				/>
 			</Container>
 		);
