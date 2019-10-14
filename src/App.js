@@ -7,6 +7,8 @@ import Col from 'react-bootstrap/Col';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import LetterButtons from './LetterButtons';
 import GameOverModal from './GameOverModal';
+import UIfx from 'uifx';
+//import beepMp3 from '../public/saddertrombones.mp3';
 
 class App extends Component {
 	state = {
@@ -63,13 +65,10 @@ class App extends Component {
 	gameOver = (outcome) => {
 		//show modal
 		if (outcome === 'USER_LOST') {
-			setTimeout(
-				this.setState({
-					modalShow: true,
-					gameOutcome: 'USER_LOST'
-				}),
-				3000
-			);
+			this.setState({
+				modalShow: true,
+				gameOutcome: 'USER_LOST'
+			});
 		} else {
 			this.setState({
 				modalShow: true,
