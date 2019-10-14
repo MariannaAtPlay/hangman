@@ -8,7 +8,11 @@ import ProgressBar from 'react-bootstrap/ProgressBar';
 import LetterButtons from './LetterButtons';
 import GameOverModal from './GameOverModal';
 import UIfx from 'uifx';
-//import beepMp3 from '../public/saddertrombones.mp3';
+import saddertrombones from './sounds/saddertrombones.mp3';
+import piglevelwin from './sounds/piglevelwin.mp3';
+
+const sadSound = new UIfx(saddertrombones);
+const happySound = new UIfx(piglevelwin);
 
 class App extends Component {
 	state = {
@@ -69,11 +73,15 @@ class App extends Component {
 				modalShow: true,
 				gameOutcome: 'USER_LOST'
 			});
+			sadSound.setVolume(0.6);
+			sadSound.play();
 		} else {
 			this.setState({
 				modalShow: true,
 				gameOutcome: 'USER_WON'
 			});
+			happySound.setVolume(0.6);
+			happySound.play();
 		}
 	};
 
