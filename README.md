@@ -2,14 +2,15 @@
 
 This is a web app created using React, react-bootstrap, HTML and CSS.
 
-## In order to start the game, run:
+### In order to start the game, run:
 
-### `yarn install`
+#### `yarn install`
 
-### `yarn start`
+#### `yarn start`
 
-This is a web app created using React, react-bootstrap, HTML and CSS. Runs the app in the development mode. Please make sure you have [Node.js](https://nodejs.org/en/) installed. You can also use `npm`<br />
+Runs the app in the development mode. This command will also concurrently start a LinkedIn-REACH Words API proxy server at: http://localhost:5000 Please make sure you have [Node.js](https://nodejs.org/en/) installed. You can also use `npm`<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+If you need to cheat... <sup id="a1">[1](#f1)</sup>
 
 ### Game rules:
 
@@ -17,7 +18,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 -   The guesser loses the game if they guess 6 letters that are not in the secret word
 -   The guesser wins the game if they guess all letters in the secret word correctly and have not already lost the game per the conditions above
 
-### Requirements:
+### Implemented Requirements:
 
 -   The length of the secret word is displayed to the guesser (e.g. as a set of underscores)
 -   As the guesser makes correct guesses, occurrences of the guessed letter in the word are shown while unknown letters are still hidden
@@ -25,10 +26,14 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 -   A list of incorrect guesses are displayed
 -   Retrieves a dictionary list of words from the word dictionary REST API provided. I had to implement a proxi server using Node.js/Express to work around CORS issues I encouneted.
 
-### Extenions:
+### Implemented Extenions:
 
 -   Displays a progress bar as well as a flower visual that gets updated as the user guesses incorrectly
 -   User is invited to select a “difficulty level” when the game starts, and the app will adjust the words that are used based on the user’s preference
 -   Sound effects
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+#### Footnote
+
+<span id="f1">1</span> ...open the console...(shhhhh! don't tell anyone!) [↩](#a1)
