@@ -6,7 +6,7 @@
 		"a11y-react-emoji": "^1.1.1",
 		"bootstrap": "^4.3.1",
 		"concurrently": "^4.1.2",
-		"express": "^4.17.1",
+		"express": "^4.17.3",
 		"react": "^16.10.2",
 		"react-bootstrap": "^1.0.0-beta.14",
 		"react-dom": "^16.10.2",
